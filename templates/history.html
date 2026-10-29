@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        History - AI Fake Email Detector
+    </title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        body {
+            min-height: 100vh;
+            background: #f4f7fb;
+            color: #0f172a;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+            height: 72px;
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #1e3a8a
+            );
+
+            color: white;
+
+            padding: 0 7%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow:
+                0 4px 20px rgba(
+                    15,
+                    23,
+                    42,
+                    0.18
+                );
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(
+                255,
+                255,
+                255,
+                0.12
+            );
+
+            border-radius: 10px;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+
+        .nav-links a {
+            color: #dbeafe;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            padding: 10px 14px;
+
+            border-radius: 8px;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-links a:hover {
+            background: rgba(
+                255,
+                255,
+                255,
+                0.12
+            );
+
+            color: white;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 92%;
+
+            max-width: 1250px;
+
+            margin: 45px auto;
+        }
+
+
+        /* =========================
+           PAGE HEADER
+        ========================= */
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+
+        .page-tag {
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            margin-bottom: 12px;
+        }
+
+
+        .page-header h1 {
+            font-size: 32px;
+
+            color: #0f172a;
+
+            margin-bottom: 8px;
+        }
+
+
+        .subtitle {
+            color: #64748b;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           HISTORY CARD
+        ========================= */
+
+        .history-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            border: 1px solid #e5e7eb;
+
+            box-shadow:
+                0 10px 35px rgba(
+                    15,
+                    23,
+                    42,
+                    0.08
+                );
+        }
+
+
+        /* =========================
+           TABLE WRAPPER
+        ========================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+
+            border-radius: 14px;
+
+            border: 1px solid #e2e8f0;
+        }
+
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1050px;
+        }
+
+
+        thead {
+            background: #0f172a;
+        }
+
+
+        th {
+            color: white;
+
+            padding: 16px 14px;
+
+            text-align: left;
+
+            font-size: 12px;
+
+            letter-spacing: 0.3px;
+
+            white-space: nowrap;
+        }
+
+
+        td {
+            padding: 17px 14px;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
+            color: #475569;
+
+            vertical-align: top;
+
+            font-size: 13px;
+        }
+
+
+        tbody tr {
+            transition: 0.2s;
+        }
+
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* =========================
+           DATE
+        ========================= */
+
+        .date {
+            color: #64748b;
+
+            white-space: nowrap;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           EMAIL
+        ========================= */
+
+        .email-text {
+            max-width: 320px;
+
+            min-width: 250px;
+
+            line-height: 1.6;
+
+            word-break: break-word;
+
+            color: #334155;
+        }
+
+
+        /* =========================
+           RESULT BADGES
+        ========================= */
+
+        .result-badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 7px 10px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            font-size: 11px;
+
+            white-space: nowrap;
+        }
+
+
+        .result-high {
+            background: #fee2e2;
+
+            color: #b91c1c;
+        }
+
+
+        .result-medium {
+            background: #ffedd5;
+
+            color: #c2410c;
+        }
+
+
+        .result-low {
+            background: #dcfce7;
+
+            color: #15803d;
+        }
+
+
+        /* =========================
+           RISK
+        ========================= */
+
+        .risk {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-weight: bold;
+
+            font-size: 12px;
+        }
+
+
+        .risk-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+        }
+
+
+        .risk-high {
+            color: #dc2626;
+        }
+
+
+        .risk-high .risk-dot {
+            background: #dc2626;
+        }
+
+
+        .risk-medium {
+            color: #d97706;
+        }
+
+
+        .risk-medium .risk-dot {
+            background: #f59e0b;
+        }
+
+
+        .risk-low {
+            color: #16a34a;
+        }
+
+
+        .risk-low .risk-dot {
+            background: #16a34a;
+        }
+
+
+        /* =========================
+           SCORE
+        ========================= */
+
+        .score-wrapper {
+            min-width: 90px;
+        }
+
+
+        .score-number {
+            font-weight: bold;
+
+            color: #0f172a;
+
+            margin-bottom: 7px;
+        }
+
+
+        .mini-progress {
+            width: 80px;
+
+            height: 6px;
+
+            background: #e2e8f0;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+
+        .mini-progress-fill {
+            height: 100%;
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================
+           REASONS
+        ========================= */
+
+        .reasons {
+            max-width: 270px;
+
+            line-height: 1.5;
+        }
+
+
+        .reason-tag {
+            display: inline-block;
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+            padding: 5px 8px;
+
+            border-radius: 6px;
+
+            margin: 2px;
+
+            font-size: 11px;
+
+            border: 1px solid #e2e8f0;
+        }
+
+
+        /* =========================
+           PAGINATION
+        ========================= */
+
+        .pagination {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 25px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .pagination a,
+        .pagination .current,
+        .pagination .disabled {
+            min-width: 42px;
+
+            height: 40px;
+
+            padding: 0 12px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        .pagination a {
+            background: #f1f5f9;
+
+            color: #334155;
+
+            border: 1px solid #e2e8f0;
+
+            transition: 0.2s;
+        }
+
+
+        .pagination a:hover {
+            background: #2563eb;
+
+            color: white;
+
+            border-color: #2563eb;
+        }
+
+
+        .pagination .current {
+            background: #2563eb;
+
+            color: white;
+
+            border: 1px solid #2563eb;
+        }
+
+
+        .pagination .disabled {
+            background: #f8fafc;
+
+            color: #94a3b8;
+
+            border: 1px solid #e2e8f0;
+
+            cursor: not-allowed;
+        }
+
+
+        .page-info {
+            text-align: center;
+
+            margin-top: 12px;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           EMPTY HISTORY
+        ========================= */
+
+        .empty {
+            text-align: center;
+
+            padding: 70px 20px;
+
+            color: #64748b;
+        }
+
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #eff6ff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 38px;
+        }
+
+
+        .empty h3 {
+            color: #0f172a;
+
+            margin-bottom: 9px;
+
+            font-size: 22px;
+        }
+
+
+        .empty p {
+            margin-bottom: 22px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .button {
+            display: inline-block;
+
+            padding: 13px 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+
+        .button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(
+                    37,
+                    99,
+                    235,
+                    0.25
+                );
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+                height: auto;
+
+                padding: 15px 5%;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+
+            .nav-links {
+                justify-content: center;
+
+                flex-wrap: wrap;
+            }
+
+
+            .container {
+                width: 94%;
+
+                margin: 30px auto;
+            }
+
+
+            .page-header h1 {
+                font-size: 27px;
+            }
+
+
+            .history-card {
+                padding: 15px;
+            }
+
+
+            .table-wrapper {
+                border-radius: 10px;
+            }
+
+
+            .pagination {
+                gap: 5px;
+            }
+
+
+            .pagination a,
+            .pagination .current,
+            .pagination .disabled {
+                min-width: 38px;
+
+                height: 38px;
+
+                padding: 0 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🛡️
+        </div>
+
+        <span>
+            AI Fake Email Detector
+        </span>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/history">
+            History
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="container">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div class="page-tag">
+            📊 ANALYSIS RECORDS
+        </div>
+
+        <h1>
+            📜 Email Detection History
+        </h1>
+
+        <p class="subtitle">
+            Review your previously analyzed emails
+            and their detected risk levels.
+        </p>
+
+    </div>
+
+
+    <!-- HISTORY CARD -->
+
+    <div class="history-card">
+
+
+        {% if records %}
+
+
+        <!-- =========================
+             TABLE
+        ========================= -->
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            DATE & TIME
+                        </th>
+
+                        <th>
+                            EMAIL CONTENT
+                        </th>
+
+                        <th>
+                            RESULT
+                        </th>
+
+                        <th>
+                            RISK LEVEL
+                        </th>
+
+                        <th>
+                            SCORE
+                        </th>
+
+                        <th>
+                            DETECTION REASONS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for record in records %}
+
+                    <tr>
+
+
+                        <!-- DATE -->
+
+                        <td class="date">
+
+                            🕒
+                            {{ record.created_at }}
+
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td class="email-text">
+
+                            {{ record.email_text }}
+
+                        </td>
+
+
+                        <!-- RESULT -->
+
+                        <td>
+
+                            {% if record.risk == "HIGH" %}
+
+                                <span
+                                    class="result-badge result-high">
+
+                                    🚨
+                                    {{ record.result }}
+
+                                </span>
+
+                            {% elif record.risk == "MEDIUM" %}
+
+                                <span
+                                    class="result-badge result-medium">
+
+                                    ⚠️
+                                    {{ record.result }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span
+                                    class="result-badge result-low">
+
+                                    ✅
+                                    {{ record.result }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- RISK -->
+
+                        <td>
+
+                            {% if record.risk == "HIGH" %}
+
+                                <span
+                                    class="risk risk-high">
+
+                                    <span
+                                        class="risk-dot">
+                                    </span>
+
+                                    HIGH
+
+                                </span>
+
+                            {% elif record.risk == "MEDIUM" %}
+
+                                <span
+                                    class="risk risk-medium">
+
+                                    <span
+                                        class="risk-dot">
+                                    </span>
+
+                                    MEDIUM
+
+                                </span>
+
+                            {% else %}
+
+                                <span
+                                    class="risk risk-low">
+
+                                    <span
+                                        class="risk-dot">
+                                    </span>
+
+                                    LOW
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- SCORE -->
+
+                        <td>
+
+                            <div class="score-wrapper">
+
+                                <div class="score-number">
+
+                                    {{ record.score }}/100
+
+                                </div>
+
+
+                                <div class="mini-progress">
+
+                                    <div
+                                        class="mini-progress-fill"
+
+                                        style="
+                                            width:
+                                            {{ record.score }}%;
+
+                                            {% if record.risk == 'HIGH' %}
+
+                                                background:
+                                                #dc2626;
+
+                                            {% elif record.risk == 'MEDIUM' %}
+
+                                                background:
+                                                #f59e0b;
+
+                                            {% else %}
+
+                                                background:
+                                                #16a34a;
+
+                                            {% endif %}
+                                        "
+                                    ></div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- REASONS -->
+
+                        <td class="reasons">
+
+                            {% if record.reasons %}
+
+                                {% for reason
+                                   in record.reasons.split(', ') %}
+
+                                    <span
+                                        class="reason-tag">
+
+                                        {{ reason }}
+
+                                    </span>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <span
+                                    class="reason-tag">
+
+                                    No suspicious patterns
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             PAGINATION
+        ========================= -->
+
+        {% if total_pages > 1 %}
+
+        <div class="pagination">
+
+
+            <!-- PREVIOUS -->
+
+            {% if page > 1 %}
+
+                <a href="{{ url_for(
+                    'history',
+                    page=page-1
+                ) }}">
+
+                    ← Previous
+
+                </a>
+
+            {% else %}
+
+                <span class="disabled">
+
+                    ← Previous
+
+                </span>
+
+            {% endif %}
+
+
+            <!-- PAGE NUMBERS -->
+
+            {% for page_number
+               in range(1, total_pages + 1) %}
+
+
+                {% if page_number == page %}
+
+                    <span class="current">
+
+                        {{ page_number }}
+
+                    </span>
+
+                {% else %}
+
+                    <a href="{{ url_for(
+                        'history',
+                        page=page_number
+                    ) }}">
+
+                        {{ page_number }}
+
+                    </a>
+
+                {% endif %}
+
+
+            {% endfor %}
+
+
+            <!-- NEXT -->
+
+            {% if page < total_pages %}
+
+                <a href="{{ url_for(
+                    'history',
+                    page=page+1
+                ) }}">
+
+                    Next →
+
+                </a>
+
+            {% else %}
+
+                <span class="disabled">
+
+                    Next →
+
+                </span>
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- PAGE INFORMATION -->
+
+        <div class="page-info">
+
+            Page {{ page }}
+            of
+            {{ total_pages }}
+
+            •
+            {{ total_records }}
+            total scans
+
+        </div>
+
+        {% endif %}
+
+
+    {% else %}
+
+
+        <!-- =========================
+             EMPTY HISTORY
+        ========================= -->
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📭
+            </div>
+
+            <h3>
+                No Email History Yet
+            </h3>
+
+            <p>
+                Your analyzed emails will appear here.
+            </p>
+
+            <a
+                href="/"
+                class="button">
+
+                🔍 Check an Email
+
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    AI Fake Email Detector
+    •
+    Email Security Analysis
+
+</footer>
+
+
+</body>
+
+</html>

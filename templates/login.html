@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - AI Fake Email Detector</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            display: flex;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.30);
+        }
+
+        /* LEFT SIDE */
+
+        .left-panel {
+            width: 50%;
+            background: linear-gradient(145deg, #0f172a, #1d4ed8);
+            color: white;
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            top: -80px;
+            right: -80px;
+        }
+
+        .left-panel::after {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            bottom: -180px;
+            left: -150px;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left-panel h2 {
+            font-size: 34px;
+            line-height: 1.2;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left-panel p {
+            color: #dbeafe;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 390px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .features {
+            margin-top: 35px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+            color: #e0f2fe;
+            font-size: 14px;
+        }
+
+        .check {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.14);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        /* RIGHT SIDE */
+
+        .right-panel {
+            width: 50%;
+            padding: 55px 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome {
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            color: #111827;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #374151;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+            color: #64748b;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+            background: #f9fafb;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .security-note {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 750px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .login-wrapper {
+                flex-direction: column;
+                max-width: 500px;
+            }
+
+            .left-panel {
+                width: 100%;
+                padding: 35px 30px;
+            }
+
+            .left-panel h2 {
+                font-size: 27px;
+            }
+
+            .features {
+                display: none;
+            }
+
+            .right-panel {
+                width: 100%;
+                padding: 35px 30px;
+            }
+
+            .welcome h1 {
+                font-size: 28px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="login-wrapper">
+
+    <!-- LEFT PANEL -->
+
+    <div class="left-panel">
+
+        <div class="logo">
+            🛡️
+        </div>
+
+        <h2>AI Fake Email<br>Detector</h2>
+
+        <p>
+            Protect yourself from suspicious and potentially
+            fraudulent emails using intelligent email analysis.
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Detect suspicious email patterns
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Analyze phishing indicators
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Keep track of your analysis history
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT PANEL -->
+
+    <div class="right-panel">
+
+        <div class="welcome">
+
+            <h1>Welcome Back</h1>
+
+            <p>
+                Sign in to continue to your dashboard.
+            </p>
+
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+
+        {% if error %}
+            <div class="message">
+                {{ error }}
+            </div>
+        {% endif %}
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages() %}
+
+            {% for message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endwith %}
+
+
+        <!-- LOGIN FORM -->
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        ✉
+                    </span>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <!-- REGISTER -->
+
+        <div class="register-link">
+
+            Don't have an account?
+            <a href="{{ url_for('register') }}">
+                Create an account
+            </a>
+
+        </div>
+
+
+        <div class="security-note">
+            🔒 Your account information is securely protected.
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

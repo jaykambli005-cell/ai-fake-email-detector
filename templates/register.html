@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - AI Fake Email Detector</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, #dbeafe, transparent 35%),
+                radial-gradient(circle at bottom right, #e0e7ff, transparent 35%),
+                #f4f7fb;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px 15px;
+        }
+
+        /* =========================
+           MAIN WRAPPER
+        ========================= */
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 1050px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            background: white;
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, 0.15);
+        }
+
+
+        /* =========================
+           LEFT SECTION
+        ========================= */
+
+        .left-section {
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0f172a,
+                    #172554,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            padding: 55px 45px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 45px;
+        }
+
+        .logo-icon {
+
+            width: 48px;
+            height: 48px;
+
+            background: rgba(255,255,255,0.12);
+
+            border: 1px solid rgba(255,255,255,0.18);
+
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .logo-text {
+
+            font-size: 19px;
+
+            font-weight: bold;
+        }
+
+
+        .left-section h2 {
+
+            font-size: 38px;
+
+            line-height: 1.15;
+
+            margin-bottom: 20px;
+        }
+
+        .left-section h2 span {
+
+            color: #60a5fa;
+        }
+
+
+        .left-description {
+
+            color: #cbd5e1;
+
+            font-size: 15px;
+
+            line-height: 1.7;
+
+            margin-bottom: 35px;
+
+            max-width: 430px;
+        }
+
+
+        /* FEATURES */
+
+        .features {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 17px;
+        }
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #e2e8f0;
+
+            font-size: 14px;
+        }
+
+        .feature-icon {
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 9px;
+
+            background: rgba(255,255,255,0.1);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =========================
+           RIGHT SECTION
+        ========================= */
+
+        .right-section {
+
+            padding: 50px 55px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+        }
+
+
+        .form-header {
+
+            margin-bottom: 25px;
+        }
+
+        .form-header h1 {
+
+            font-size: 32px;
+
+            color: #0f172a;
+
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        .message {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            background: #fef2f2;
+
+            border: 1px solid #fecaca;
+
+            color: #b91c1c;
+
+            padding: 13px 14px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+        }
+
+        .message-icon {
+
+            font-size: 16px;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+
+            display: block;
+
+            color: #334155;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 14px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #94a3b8;
+
+            font-size: 16px;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            height: 50px;
+
+            padding: 0 14px 0 43px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            color: #0f172a;
+
+            background: #f8fafc;
+
+            transition: 0.2s;
+        }
+
+        input:focus {
+
+            border-color: #2563eb;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        input::placeholder {
+
+            color: #94a3b8;
+        }
+
+
+        /* =========================
+           PASSWORD INFO
+        ========================= */
+
+        .password-info {
+
+            margin-top: 6px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           REGISTER BUTTON
+        ========================= */
+
+        .register-button {
+
+            width: 100%;
+
+            height: 51px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 8px 18px rgba(37, 99, 235, 0.20);
+        }
+
+        .register-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px rgba(37, 99, 235, 0.28);
+        }
+
+        .register-button:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* =========================
+           LOGIN LINK
+        ========================= */
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 24px;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+        .login-link a {
+
+            color: #2563eb;
+
+            font-weight: bold;
+
+            text-decoration: none;
+
+            margin-left: 4px;
+        }
+
+        .login-link a:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           SECURITY NOTE
+        ========================= */
+
+        .security-note {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            margin-top: 25px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .page-wrapper {
+
+                grid-template-columns: 1fr;
+
+                max-width: 500px;
+            }
+
+            .left-section {
+
+                display: none;
+            }
+
+            .right-section {
+
+                padding: 40px 30px;
+            }
+        }
+
+
+        @media (max-width: 450px) {
+
+            body {
+
+                padding: 15px;
+            }
+
+            .page-wrapper {
+
+                border-radius: 18px;
+            }
+
+            .right-section {
+
+                padding: 35px 22px;
+            }
+
+            .form-header h1 {
+
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-wrapper">
+
+
+    <!-- =========================
+         LEFT SIDE
+    ========================= -->
+
+    <div class="left-section">
+
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🛡️
+            </div>
+
+            <div class="logo-text">
+                AI Fake Email Detector
+            </div>
+
+        </div>
+
+
+        <h2>
+            Stay safe from
+            <span>fake emails.</span>
+        </h2>
+
+
+        <p class="left-description">
+
+            Create your account and analyze suspicious
+            emails using our email security detection system.
+
+        </p>
+
+
+        <div class="features">
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🔎
+                </div>
+
+                <span>
+                    Detect suspicious email patterns
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📊
+                </div>
+
+                <span>
+                    Get an easy-to-understand risk score
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📜
+                </div>
+
+                <span>
+                    Keep track of your analysis history
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🔐
+                </div>
+
+                <span>
+                    Secure password-protected account
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         RIGHT SIDE
+    ========================= -->
+
+    <div class="right-section">
+
+
+        <div class="form-header">
+
+            <h1>
+                Create Account
+            </h1>
+
+            <p>
+                Register to start analyzing suspicious emails.
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================
+             ERROR / MESSAGE
+        ========================= -->
+
+        {% if error %}
+
+            <div class="message">
+
+                <span class="message-icon">
+                    ⚠️
+                </span>
+
+                <span>
+                    {{ error }}
+                </span>
+
+            </div>
+
+        {% endif %}
+
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% for message in messages %}
+
+                <div class="message">
+
+                    <span class="message-icon">
+                        ⚠️
+                    </span>
+
+                    <span>
+                        {{ message }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        {% endwith %}
+
+
+
+        <!-- =========================
+             REGISTER FORM
+        ========================= -->
+
+        <form method="POST">
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Full Name
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        ✉️
+                    </span>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                </div>
+
+                <div class="password-info">
+                    Choose a password that you don't use elsewhere.
+                </div>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="register-button"
+            >
+
+                Create Account
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- LOGIN -->
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Login
+            </a>
+
+        </div>
+
+
+
+        <!-- SECURITY -->
+
+        <div class="security-note">
+
+            🔒 Your password is securely protected.
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

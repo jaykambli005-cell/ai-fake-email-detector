@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result - AI Fake Email Detector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: #f4f7fb;
+            color: #0f172a;
+        }
+        /* =========================
+           NAVBAR
+        ========================= */
+        nav {
+            height: 72px;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.18);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: bold;
+        }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-links a {
+            color: #dbeafe;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+        /* =========================
+           MAIN
+        ========================= */
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: 45px auto;
+        }
+        .page-header {
+            margin-bottom: 25px;
+        }
+        .page-tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .page-header h1 {
+            font-size: 32px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .page-header p {
+            color: #64748b;
+            font-size: 15px;
+        }
+        /* =========================
+           MAIN RESULT CARD
+        ========================= */
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+        }
+        /* =========================
+           STATUS
+        ========================= */
+        .status {
+            padding: 35px 30px;
+            border-radius: 18px;
+            text-align: center;
+            margin-bottom: 30px;
+            {% if risk == "HIGH" %}
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            {% elif risk == "MEDIUM" %}
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            {% else %}
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            {% endif %}
+        }
+        .status-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            {% if risk == "HIGH" %}
+            background: #fee2e2;
+            {% elif risk == "MEDIUM" %}
+            background: #ffedd5;
+            {% else %}
+            background: #dcfce7;
+            {% endif %}
+        }
+        .status h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            {% if risk == "HIGH" %}
+            color: #dc2626;
+            {% elif risk == "MEDIUM" %}
+            color: #ea580c;
+            {% else %}
+            color: #16a34a;
+            {% endif %}
+        }
+        .risk {
+            color: #475569;
+            font-size: 15px;
+        }
+        .risk strong {
+            {% if risk == "HIGH" %}
+            color: #dc2626;
+            {% elif risk == "MEDIUM" %}
+            color: #ea580c;
+            {% else %}
+            color: #16a34a;
+            {% endif %}
+        }
+        /* =========================
+           SCORE
+        ========================= */
+        .score-container {
+            max-width: 650px;
+            margin: 30px auto 0;
+        }
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 15px;
+        }
+        .progress-background {
+            width: 100%;
+            height: 16px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progress {
+            width: {{ score }}%;
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+            {% if risk == "HIGH" %}
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            {% elif risk == "MEDIUM" %}
+            background: linear-gradient(90deg, #fb923c, #ea580c);
+            {% else %}
+            background: linear-gradient(90deg, #4ade80, #16a34a);
+            {% endif %}
+        }
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 12px;
+        }
+        .message {
+            max-width: 700px;
+            margin: 22px auto 0;
+            color: #475569;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        /* =========================
+           SECTION TITLE
+        ========================= */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .section-icon {
+            width: 42px;
+            height: 42px;
+            background: #eff6ff;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .section-title {
+            font-size: 20px;
+            color: #0f172a;
+        }
+        /* =========================
+           DETECTION DETAILS
+        ========================= */
+        .reasons {
+            background: #f8fafc;
+            padding: 23px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+        .reasons ul {
+            list-style: none;
+        }
+        .reasons li {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 14px;
+        }
+        .reasons li:last-child {
+            border-bottom: none;
+        }
+        .warning-dot {
+            color: #dc2626;
+        }
+        .keyword {
+            display: inline-block;
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .no-detection {
+            color: #16a34a;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        /* =========================
+           SAFETY BOX
+        ========================= */
+        .safety-box {
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 14px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+        .safety-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .safety-header span {
+            font-size: 22px;
+        }
+        .safety-box h3 {
+            color: #1d4ed8;
+            font-size: 17px;
+        }
+        .safety-box p {
+            color: #475569;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        /* =========================
+           BUTTONS
+        ========================= */
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .button {
+            text-align: center;
+            text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+        .button.secondary {
+            background: #64748b;
+        }
+        .button.secondary:hover {
+            background: #475569;
+        }
+        /* =========================
+           FOOTER
+        ========================= */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        /* =========================
+           MOBILE
+        ========================= */
+        @media (max-width: 700px) {
+            nav {
+                height: auto;
+                padding: 15px 5%;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .container {
+                width: 92%;
+                margin: 30px auto;
+            }
+            .result-card {
+                padding: 22px;
+            }
+            .page-header h1 {
+                font-size: 27px;
+            }
+            .status {
+                padding: 28px 18px;
+            }
+            .status h2 {
+                font-size: 24px;
+            }
+            .score {
+                font-size: 40px;
+            }
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+            .reasons li {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- =========================
+     NAVBAR
+========================= -->
+<nav>
+    <div class="logo">
+        <div class="logo-icon">
+            🛡️
+        </div>
+        <span>
+            AI Fake Email Detector
+        </span>
+    </div>
+    <div class="nav-links">
+        <a href="/">
+            Dashboard
+        </a>
+        <a href="/history">
+            History
+        </a>
+        <a href="/logout">
+            Logout
+        </a>
+    </div>
+</nav>
+<!-- =========================
+     MAIN
+========================= -->
+<div class="container">
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="page-tag">
+            🔍 ANALYSIS COMPLETE
+        </div>
+        <h1>
+            Email Analysis Result
+        </h1>
+        <p>
+            Your email has been analyzed for suspicious and phishing-related characteristics.
+        </p>
+    </div>
+    <!-- RESULT CARD -->
+    <div class="result-card">
+        <!-- =========================
+             STATUS
+        ========================= -->
+        <div class="status">
+            <div class="status-icon">
+                {% if risk == "HIGH" %}
+                    🚨
+                {% elif risk == "MEDIUM" %}
+                    ⚠️
+                {% else %}
+                    ✅
+                {% endif %}
+            </div>
+            <h2>
+                {{ result }}
+            </h2>
+            <div class="risk">
+                Risk Level:
+                <strong>
+                    {{ risk }}
+                </strong>
+            </div>
+            <!-- SCORE -->
+            <div class="score-container">
+                <div class="score">
+                    {{ score }}/100
+                </div>
+                <div class="progress-background">
+                    <div class="progress"></div>
+                </div>
+                <div class="score-label">
+                    <span>
+                        0 — Low Risk
+                    </span>
+                    <span>
+                        High Risk — 100
+                    </span>
+                </div>
+            </div>
+            <p class="message">
+                {{ message }}
+            </p>
+        </div>
+        <!-- =========================
+             DETECTION DETAILS
+        ========================= -->
+        <div class="section-header">
+            <div class="section-icon">
+                🔎
+            </div>
+            <h3 class="section-title">
+                Detection Details
+            </h3>
+        </div>
+        <div class="reasons">
+            {% if detected %}
+                <ul>
+                    {% for word in detected %}
+                        <li>
+                            <span class="warning-dot">
+                                ●
+                            </span>
+                            Suspicious characteristic detected:
+                            <span class="keyword">
+                                {{ word }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="no-detection">
+                    <span>✓</span>
+                    No suspicious characteristics were detected.
+                </p>
+            {% endif %}
+        </div>
+        <!-- =========================
+             SAFETY RECOMMENDATION
+        ========================= -->
+        <div class="safety-box">
+            <div class="safety-header">
+                <span>
+                    💡
+                </span>
+                <h3>
+                    Safety Recommendation
+                </h3>
+            </div>
+            {% if risk == "HIGH" %}
+                <p>
+                    Avoid clicking links, downloading attachments,
+                    sharing passwords, OTPs or banking information.
+                    Verify the sender through an official source
+                    before taking any action.
+                </p>
+            {% elif risk == "MEDIUM" %}
+                <p>
+                    Be careful with this email. Verify the sender
+                    and avoid clicking unfamiliar links or sharing
+                    personal information until the message is confirmed.
+                </p>
+            {% else %}
+                <p>
+                    No major suspicious patterns were detected.
+                    However, always verify unexpected emails before
+                    sharing sensitive information or opening attachments.
+                </p>
+            {% endif %}
+        </div>
+        <!-- =========================
+             BUTTONS
+        ========================= -->
+        <div class="buttons">
+            <a href="/" class="button">
+                🔄 Check Another Email
+            </a>
+            <a href="/history" class="button secondary">
+                📜 View Analysis History
+            </a>
+        </div>
+    </div>
+</div>
+<!-- =========================
+     FOOTER
+========================= -->
+<footer>
+    AI Fake Email Detector • Email Security Analysis
+</footer>
+</body>
+</html>
